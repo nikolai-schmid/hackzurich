@@ -81,7 +81,6 @@
 
             var updateMarkers = setInterval(function() {
                 updateCar(points.shift().lat(), points.shift().lng(), map);
-                console.log(points.length);
                 if (points.length < 2) {
                     clearInterval(updateMarkers)
                 }
