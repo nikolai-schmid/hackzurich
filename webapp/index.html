@@ -79,9 +79,13 @@
           var routes = response.routes[0]
           points = routes.overview_path
 
-            setInterval(function() {
+            var updateMarkers = setInterval(function() {
                 updateCar(points.shift().lat(), points.shift().lng(), map);
-            }, 500);
+                console.log(points.length);
+                if (points.length < 2) {
+                    clearInterval(updateMarkers)
+                }
+            }, 300);
 
           directionsDisplay.setDirections(response);
         } else {
