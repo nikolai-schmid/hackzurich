@@ -9,6 +9,15 @@ import numpy as np
 import math
 import random
 
+from bokeh.models import (
+    GMapPlot, GMapOptions, ColumnDataSource, Circle, LogColorMapper, BasicTicker, ColorBar,
+    Range1d, PanTool, WheelZoomTool, BoxSelectTool
+)
+
+from bokeh.models.mappers import ColorMapper, LinearColorMapper
+from bokeh.palettes import Viridis5
+from bokeh.plotting import figure, output_file, save
+
 app = Flask(__name__)
 CORS(app)
 
@@ -134,3 +143,67 @@ def computer_crash_prob(xx, details, **kargs):
 # use this function!!!
 def crash_prob(xx, details, get_var=False):
     return computer_crash_prob(xx, details, return_cov=get_var)
+
+@app.route('/get_html_plot', methods=['POST'])
+def get_html_plot():
+    content = request.get_json()
+    print(content)
+    routes = content['routes']  # [[1.2, 4.5], [1.2, 4.5], [1.2, 4.5]]
+    persona = content['persona']  # { "age": 17, weather: 1 }
+    # persona = {
+    #     'time': 10,
+    #     'age': 17,
+    #     'vehicle': 3,
+    #     'weather': 3,
+    #     'sex': 1
+    # }
+    result_probs = crash_prob(routes, persona)  # [0.1, 0.5, 0.2]
+    plot_scatterplot_on_map(lat, lng, coors, result_probs)
+    return
+
+def prepare_data_for_plots(coors, p):
+    lats, lots = [], []
+    for cor in coors:
+        lats.append(cor[0])
+        lots.append(cor[1])
+
+    source = ColumnDataSource(
+        data=dict(
+            lat=lats,
+            lon=lots,
+            color=p,
+            size=[5]*len(lots)
+        )
+    )
+    return source
+
+def plot_scatterplot_on_map(lat, lng, coors, result_probs):
+    source = prepare_data_for_plots(coors, result_probs)
+    map_options = GMapOptions(lat=lat, lng=lng, map_type="roadmap", zoom=12)
+
+    plot = GMapPlot(
+        x_range=Range1d(), y_range=Range1d(), map_options=map_options
+    )
+
+    plot.api_key = "AIzaSyC7DtKqWoAtgKFmYtUu-PceyA7bV1Y9NTU"
+
+    color_mapper = LinearColorMapper(palette=Viridis5)
+
+    circle = Circle(x="lon", y="lat", size="size",
+                    fill_color={'field': 'color', 'transform': color_mapper},
+                    fill_alpha=0.5, line_color=None)
+    plot.add_glyph(source, circle)
+
+    color_bar = ColorBar(color_mapper=color_mapper,
+                         ticker=BasicTicker(),
+                         label_standoff=12,
+                         border_line_color=None,
+                         location=(0, 0))
+    plot.add_layout(color_bar, 'right')
+
+    plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
+
+    output_notebook()
+
+    output_file("plot.html")
+    save(plot)
