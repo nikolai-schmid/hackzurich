@@ -25,25 +25,9 @@ class MapUpdater {
         this.gmarkers[0] = gmarker;
     }
 
-    public alert(danger: Danger, map) {
-        var audioPath;
-        var icon;
-
-        switch (danger.dangerType) {
-            case DangerType.SPEED:
-                audioPath = "assets/car-accelerating";
-                icon =  "assets/speed.png";
-                break;
-            case DangerType.VISION:
-                audioPath = "assets/car-break";
-                icon =  "assets/eye.png";
-                break;
-            case DangerType.STUPIDITY:
-                break;
-        }
-
-        this.updateMarker(new Marker(danger.lat, danger.lng, 0, map, icon), true);
-        var audio = new Audio('assets/car-break.mp3');
+    public alert(lat, lng, map) {
+        this.updateMarker(new Marker(lat, lng, 0, map, "assets/speed.png"), true);
+        var audio = new Audio('assets/slow_down.mp3');
         audio.play();
     }
 

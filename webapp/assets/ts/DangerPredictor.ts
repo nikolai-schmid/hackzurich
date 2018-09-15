@@ -1,25 +1,32 @@
 class DangerPredictor {
+    public static PREDICTION_OVERHEAD = 10;
+
     private directionsService;
     private mapUpdater;
+    private apiCommunicator: ApiCommunicator;
 
     public constructor(directionsService, mapUpdater) {
         this.directionsService = directionsService;
         this.mapUpdater = mapUpdater;
+        this.apiCommunicator = new ApiCommunicator();
     }
 
-    public predictDanger(lat, lng): Danger {
-        var distanceToDanger = this.calcDistance(lat, lng, 47.39105000000001, 8.52298);
-        if (distanceToDanger < 0.01) {
-            return new Danger(DangerType.SPEED, lat, lng)
+    public hasUpcomingDanger(pointIndex, dangers): boolean {
+       if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] === 1) {
+            return true;
         }
 
-        return new Danger(DangerType.NONE, lat, lng);
+        return false;
+    }
+
+    public getDangersOnRoute(data) {
+        return this.apiCommunicator.checkDangerForRoute(data);
     }
 
     private calcDistance(lat1, lon1, lat2, lon2) {
         var radlat1 = Math.PI * lat1/180
         var radlat2 = Math.PI * lat2/180
-        var theta = lon1-lon2
+        var theta = lon1 - lon2
         var radtheta = Math.PI * theta/180
 
         var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
