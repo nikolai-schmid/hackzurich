@@ -1,4 +1,4 @@
-var MapUpdater = (function () {
+var MapUpdater = /** @class */ (function () {
     function MapUpdater(map) {
         this.map = null;
         this.gmarkers = [];
@@ -53,8 +53,8 @@ var MapUpdater = (function () {
         return (degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
     };
     return MapUpdater;
-})();
-var Marker = (function () {
+}());
+var Marker = /** @class */ (function () {
     function Marker(lat, lng, angle, map, icon) {
         this.lat = lat;
         this.lng = lng;
@@ -63,4 +63,5 @@ var Marker = (function () {
         this.icon = icon;
     }
     return Marker;
-})();
+}());
+//# sourceMappingURL=MapUpdater.js.map

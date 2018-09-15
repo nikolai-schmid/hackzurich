@@ -1,4 +1,4 @@
-var DangerPredictor = (function () {
+var DangerPredictor = /** @class */ (function () {
     function DangerPredictor(directionsService, mapUpdater) {
         this.directionsService = directionsService;
         this.mapUpdater = mapUpdater;
@@ -30,15 +30,15 @@ var DangerPredictor = (function () {
     };
     DangerPredictor.PREDICTION_OVERHEAD = 10;
     return DangerPredictor;
-})();
-var Danger = (function () {
+}());
+var Danger = /** @class */ (function () {
     function Danger(dangerType, lat, lng) {
         this.dangerType = dangerType;
         this.lat = lat;
         this.lng = lng;
     }
     return Danger;
-})();
+}());
 var DangerType;
 (function (DangerType) {
     DangerType[DangerType["NONE"] = 0] = "NONE";
@@ -46,3 +46,4 @@ var DangerType;
     DangerType[DangerType["VISION"] = 2] = "VISION";
     DangerType[DangerType["STUPIDITY"] = 3] = "STUPIDITY";
 })(DangerType || (DangerType = {}));
+//# sourceMappingURL=DangerPredictor.js.map
