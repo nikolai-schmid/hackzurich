@@ -162,7 +162,7 @@ def get_html_plot():
     # }
     mesh = create_mesh(x1, x2, y1, y2)
     result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
-    plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, coors, result_probs)
+    plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, mesh, result_probs)
     return
 
 def create_mesh(x1, x2, y1, y2, affinity=100):
@@ -174,9 +174,9 @@ def create_mesh(x1, x2, y1, y2, affinity=100):
             mesh.append((i, j))
     return mesh
 
-def prepare_data_for_plots(coors, p):
+def prepare_data_for_plots(mesh, p):
     lats, lots = [], []
-    for cor in coors:
+    for cor in mesh:
         lats.append(cor[0])
         lots.append(cor[1])
 
@@ -190,8 +190,8 @@ def prepare_data_for_plots(coors, p):
     )
     return source
 
-def plot_scatterplot_on_map(lat, lng, coors, result_probs):
-    source = prepare_data_for_plots(coors, result_probs)
+def plot_scatterplot_on_map(lat, lng, mesh, result_probs):
+    source = prepare_data_for_plots(mesh, result_probs)
     map_options = GMapOptions(lat=lat, lng=lng, map_type="roadmap", zoom=12)
 
     plot = GMapPlot(
