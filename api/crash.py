@@ -276,7 +276,7 @@ def plot_scatterplot_on_map2(x0, x1, y0, y1, mesh, result_probs):
     p2 = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), y1, x1)
 
     color_mapper = LinearColorMapper(palette=Spectral11_alpha, low=0, high=max(result_probs))
-    fig_p.image(image=[result_probs.reshape(800, 800)], x=y0, y=x0, dw=p2[0]-p1[0], dh=p2[1]-p1[1], color_mapper=color_mapper)
+    fig_p.image(image=[result_probs.reshape(700, 700)], x=y0, y=x0, dw=p2[0]-p1[0], dh=p2[1]-p1[1], color_mapper=color_mapper)
 
     color_bar = ColorBar(color_mapper=color_mapper, location=(5, 0))
 
