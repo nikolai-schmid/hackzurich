@@ -1,5 +1,18 @@
 class ApiCommunicator {
-    public pingRoute(data) {
+    public checkDangerForRoute(data) {
+        let dangers = [];
+
+        for (let i = 0; i < data.routes[0].length; i++) {
+            if (i === 11) {
+                dangers.push(1);
+            } else {
+                dangers.push(0);
+            }
+        }
+
+        return dangers;
+
+
         jQuery.ajax({
             url: "http://192.168.43.81:5000/predict",
             type: "POST",
@@ -9,7 +22,9 @@ class ApiCommunicator {
                 console.log(resultData);
             },
             error : function(jqXHR, textStatus, errorThrown) {
-                alert("error, couldn't fetch data")
+                console.log("error, couldn't fetch data");
+
+
             },
 
             timeout: 120000,

@@ -4,12 +4,14 @@ var DangerPredictor = /** @class */ (function () {
         this.mapUpdater = mapUpdater;
         this.apiCommunicator = new ApiCommunicator();
     }
-    DangerPredictor.prototype.predictDangerAtPoint = function (lat, lng) {
-        var distanceToDanger = this.calcDistance(lat, lng, 47.39105000000001, 8.52298);
-        if (distanceToDanger < 0.01) {
-            return new Danger(DangerType.SPEED, lat, lng);
+    DangerPredictor.prototype.hasUpcomingDanger = function (pointIndex, dangers) {
+        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] === 1) {
+            return true;
         }
-        return new Danger(DangerType.NONE, lat, lng);
+        return false;
+    };
+    DangerPredictor.prototype.getDangersOnRoute = function (data) {
+        return this.apiCommunicator.checkDangerForRoute(data);
     };
     DangerPredictor.prototype.calcDistance = function (lat1, lon1, lat2, lon2) {
         var radlat1 = Math.PI * lat1 / 180;
@@ -26,6 +28,7 @@ var DangerPredictor = /** @class */ (function () {
         dist = dist * 1.609344;
         return dist;
     };
+    DangerPredictor.PREDICTION_OVERHEAD = 10;
     return DangerPredictor;
 }());
 var Danger = /** @class */ (function () {
