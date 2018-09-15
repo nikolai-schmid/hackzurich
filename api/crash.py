@@ -16,7 +16,9 @@ from bokeh.models import (
 
 from bokeh.models.mappers import ColorMapper, LinearColorMapper
 from bokeh.palettes import Viridis5
-from bokeh.plotting import figure, output_file, save
+from bokeh.plotting import figure, output_file, gmap, save
+from bokeh.io import output_notebook, show # output_file
+from bokeh.models import ColumnDataSource, GMapOptions
 
 app = Flask(__name__)
 CORS(app)
