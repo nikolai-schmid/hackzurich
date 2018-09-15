@@ -198,7 +198,7 @@ def create_html_plot2():
     #     'weather': 3,
     #     'sex': 1
     # }
-    mesh = create_mesh(x1, x2, y1, y2)
+    mesh = create_mesh(x1, x2, y1, y2, affinity=800)
     result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
     plot_scatterplot_on_map2(x1, x2, y1, y2, mesh, result_probs)
     return '0'
