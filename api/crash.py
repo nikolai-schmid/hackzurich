@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import jsonify
-from flask import request
+from flask import request, send_from_directory
 from flask_cors import CORS
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
@@ -17,10 +17,10 @@ from bokeh.models import (
 from bokeh.models.mappers import ColorMapper, LinearColorMapper
 from bokeh.palettes import Viridis5
 from bokeh.plotting import figure, output_file, gmap, save
-from bokeh.io import output_notebook, show # output_file
+from bokeh.io import output_notebook, show  # output_file
 from bokeh.models import ColumnDataSource, GMapOptions
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 CORS(app)
 
 
@@ -146,8 +146,14 @@ def computer_crash_prob(xx, details, **kargs):
 def crash_prob(xx, details, get_var=False):
     return computer_crash_prob(xx, details, return_cov=get_var)
 
-@app.route('/get_html_plot', methods=['POST'])
+
+@app.route('/html_plot')
 def get_html_plot():
+    return send_from_directory('.', 'plot.html')
+
+
+@app.route('/html_plot', methods=['POST'])
+def create_html_pot():
     content = request.get_json()
     print(content)
     x1 = content['x1']
@@ -167,6 +173,7 @@ def get_html_plot():
     plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, mesh, result_probs)
     return '0'
 
+
 def create_mesh(x1, x2, y1, y2, affinity=100):
     xx = np.linspace(x1, x2, affinity)
     yy = np.linspace(y1, y2, affinity)
@@ -175,6 +182,7 @@ def create_mesh(x1, x2, y1, y2, affinity=100):
         for j in yy:
             mesh.append((i, j))
     return mesh
+
 
 def prepare_data_for_plots(mesh, p):
     lats, lots = [], []
@@ -191,6 +199,7 @@ def prepare_data_for_plots(mesh, p):
         )
     )
     return source
+
 
 def plot_scatterplot_on_map(lat, lng, mesh, result_probs):
     source = prepare_data_for_plots(mesh, result_probs)
