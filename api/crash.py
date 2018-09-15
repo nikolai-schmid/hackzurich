@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask_cors import CORS
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
 import scipy.stats as st
@@ -9,6 +10,7 @@ import math
 import random
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
@@ -19,15 +21,16 @@ def main():
 @app.route('/predict', methods=['POST'])
 def predict():
     content = request.get_json()
+    print(content)
     routes = content['routes']  # [[1.2, 4.5], [1.2, 4.5], [1.2, 4.5]]
     persona = content['persona']  # { "age": 17, weather: 1 }
-    persona = {
-        'time': 10,
-        'age': 17,
-        'vehicle': 3,
-        'weather': 3,
-        'sex': 1
-    }
+    # persona = {
+    #     'time': 10,
+    #     'age': 17,
+    #     'vehicle': 3,
+    #     'weather': 3,
+    #     'sex': 1
+    # }
     result = crash_prob(routes, persona)  # [0.1, 0.5, 0.2]
     return jsonify(list(result))
 
