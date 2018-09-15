@@ -67,7 +67,7 @@ function updateMarkers(points) {
             return;
         }
 
-        var danger = dangerPredictor.predictDanger(points[1].lat(), points[1].lng());
+        var danger = dangerPredictor.predictDangerAtPoint(points[1].lat(), points[1].lng());
         if (danger.dangerType !== DangerType.NONE) {
             mapUpdater.alert(danger, map)
         }

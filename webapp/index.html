@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta charset="utf-8">
-  <title>Directions Service</title>
-  <style>
-    /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-    #map {
-      height: 100%;
-    }
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Directions Service</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    /* Optional: Makes the sample page fill the window. */
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    #floating-panel {
-      position: absolute;
-      top: 10px;
-      left: 25%;
-      z-index: 5;
-      background-color: #fff;
-      padding: 5px;
-      border: 1px solid #999;
-      text-align: center;
-      font-family: 'Roboto', 'sans-serif';
-      line-height: 30px;
-      padding-left: 10px;
-    }
-  </style>
-</head>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
 
-<body>
-  <div id="floating-panel">
-    <b>Start: </b>
-    <select id="start">
-      <option value="technopark, Zurich">TechnoPark</option>
-    </select>
-    <b>End: </b>
-    <select id="end">
-      <option value="Hauptbahnhof, Zurich">Hauptbahnhof</option>
-    </select>
-  </div>
-  <div id="map"></div>
-  <script src="assets/ts/MapUpdater.js"></script>
-  <script src="assets/ts/DangerPredictor.js"></script>
-  <script src="assets/ts/script.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7DtKqWoAtgKFmYtUu-PceyA7bV1Y9NTU&callback=initMap"></script>
-</body>
+  <body>
+    <div class="container-fluid">
+      <h2>MockMap</h2>
+      <nav>
+        <div class="points-modal">
+          <!-- Button trigger modal -->
 
+
+          <!-- Modal -->
+          <div class="modal fade" id="positionsModal" tabindex="-1" role="dialog" aria-labelledby="positionsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title" id="positionsModalLabel">Positions</h3>
+                </div>
+                <div class="modal-body">
+                  <b>Start: </b>
+                  <select class="form-control" id="start">
+                    <option value="technopark, Zurich">TechnoPark</option>
+                  </select>
+                  <b>End: </b>
+                  <select class="form-control" id="end">
+                    <option value="Hauptbahnhof, Zurich">Hauptbahnhof</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#positionsModal">
+          Positions
+        </button>
+
+        <a class="btn btn-primary" href="real.html">Realtime</a>
+        <a class="btn btn-primary" href="index.html">MockMap</a>
+        <a class="btn btn-primary" href="dashboard.html">Dashboard</a>
+      </nav>
+
+      <div id="map"></div>
+      <script src="assets/ts/MapUpdater.js"></script>
+      <script src="assets/ts/DangerPredictor.js"></script>
+      <script src="assets/ts/map.js"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7DtKqWoAtgKFmYtUu-PceyA7bV1Y9NTU&callback=initMap"></script>
+    </div>
+  </body>
 </html>
+

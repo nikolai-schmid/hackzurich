@@ -1,13 +1,15 @@
 class DangerPredictor {
     private directionsService;
     private mapUpdater;
+    private apiCommunicator;
 
     public constructor(directionsService, mapUpdater) {
         this.directionsService = directionsService;
         this.mapUpdater = mapUpdater;
+        this.apiCommunicator = new ApiCommunicator();
     }
 
-    public predictDanger(lat, lng): Danger {
+    public predictDangerAtPoint(lat, lng): Danger {
         var distanceToDanger = this.calcDistance(lat, lng, 47.39105000000001, 8.52298);
         if (distanceToDanger < 0.01) {
             return new Danger(DangerType.SPEED, lat, lng)
