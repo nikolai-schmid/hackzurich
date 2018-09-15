@@ -6,7 +6,7 @@ var directionsDisplay = null;
 var inDangerCount = 0;
 
 var pointNum = 0;
-markerIndex = 0;
+var markerIndex = 0;
 
 function initMap() {
     directionsService = new google.maps.DirectionsService;
@@ -49,13 +49,10 @@ function mock() {
 function updateMarkers(points) {
     var routes = [];
     for (let point of points) {
-        routes.push([point.lat, point.lng]);
+        routes.push([point.lat(), point.lng()]);
     }
-
     var data = {
-        routes: [
-            routes
-        ],
+        routes: routes,
         persona: {
             "time": 10,
             "age": 17,
@@ -64,7 +61,8 @@ function updateMarkers(points) {
             "sex": 1
         }
     }
-    let dangers = this.dangerPredictor.getDangersOnRoute(data);
+
+    let dangers = dangerPredictor.getDangersOnRoute(data);
 
     var updateMarkersInterval = setInterval(() => {
         mapUpdater.removeMarker();

@@ -12,6 +12,7 @@ class DangerPredictor {
     }
 
     public hasUpcomingDanger(pointIndex, dangers): boolean {
+
        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] === 1) {
             return true;
         }
