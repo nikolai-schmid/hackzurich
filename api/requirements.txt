@@ -1,0 +1,6 @@
+flask
+sklearn
+scipy
+numpy
+bokeh
+flask-cors
