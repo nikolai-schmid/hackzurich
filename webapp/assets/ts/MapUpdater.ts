@@ -1,6 +1,7 @@
 class MapUpdater {
     private map = null;
     private gmarkers: Array<any> = [];
+    private crashMarkers: Array<any> = [];
 
     constructor(map) {
         this.map = map;
@@ -20,13 +21,14 @@ class MapUpdater {
             map: marker.map
         });
 
-        if (stay) return;
-
-        this.gmarkers[0] = gmarker;
+        if (stay) {
+            this.crashMarkers.push(gmarker);
+        } else {
+            this.gmarkers[0] = gmarker;
+        }
     }
 
-    public alert(lat, lng, map) {
-        this.updateMarker(new Marker(lat, lng, 0, map, "assets/speed.png"), true);
+    public alert() {
         var audio = new Audio('assets/slow_down.mp3');
         audio.play();
     }

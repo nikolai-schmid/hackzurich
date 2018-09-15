@@ -2,6 +2,7 @@ var MapUpdater = (function () {
     function MapUpdater(map) {
         this.map = null;
         this.gmarkers = [];
+        this.crashMarkers = [];
         this.map = map;
     }
     MapUpdater.prototype.removeMarker = function () {
@@ -17,12 +18,14 @@ var MapUpdater = (function () {
             icon: marker.icon,
             map: marker.map
         });
-        if (stay)
-            return;
-        this.gmarkers[0] = gmarker;
+        if (stay) {
+            this.crashMarkers.push(gmarker);
+        }
+        else {
+            this.gmarkers[0] = gmarker;
+        }
     };
-    MapUpdater.prototype.alert = function (lat, lng, map) {
-        this.updateMarker(new Marker(lat, lng, 0, map, "assets/speed.png"), true);
+    MapUpdater.prototype.alert = function () {
         var audio = new Audio('assets/slow_down.mp3');
         audio.play();
     };

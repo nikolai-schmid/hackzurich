@@ -5,7 +5,7 @@ var DangerPredictor = (function () {
         this.apiCommunicator = new ApiCommunicator();
     }
     DangerPredictor.prototype.hasUpcomingDanger = function (pointIndex, dangers) {
-        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] > 0.3) {
+        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] > 1) {
             return true;
         }
         return false;
