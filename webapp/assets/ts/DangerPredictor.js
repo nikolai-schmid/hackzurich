@@ -1,11 +1,11 @@
-var DangerPredictor = /** @class */ (function () {
+var DangerPredictor = (function () {
     function DangerPredictor(directionsService, mapUpdater) {
         this.directionsService = directionsService;
         this.mapUpdater = mapUpdater;
         this.apiCommunicator = new ApiCommunicator();
     }
     DangerPredictor.prototype.hasUpcomingDanger = function (pointIndex, dangers) {
-        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] === 1) {
+        if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] > 0.3) {
             return true;
         }
         return false;
@@ -30,15 +30,15 @@ var DangerPredictor = /** @class */ (function () {
     };
     DangerPredictor.PREDICTION_OVERHEAD = 10;
     return DangerPredictor;
-}());
-var Danger = /** @class */ (function () {
+})();
+var Danger = (function () {
     function Danger(dangerType, lat, lng) {
         this.dangerType = dangerType;
         this.lat = lat;
         this.lng = lng;
     }
     return Danger;
-}());
+})();
 var DangerType;
 (function (DangerType) {
     DangerType[DangerType["NONE"] = 0] = "NONE";

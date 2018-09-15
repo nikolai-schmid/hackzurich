@@ -12,7 +12,8 @@ class DangerPredictor {
     }
 
     public hasUpcomingDanger(pointIndex, dangers): boolean {
-       if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] === 1) {
+
+       if (dangers[pointIndex + DangerPredictor.PREDICTION_OVERHEAD] > 0.3) {
             return true;
         }
 

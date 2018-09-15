@@ -1,4 +1,4 @@
-var MapUpdater = /** @class */ (function () {
+var MapUpdater = (function () {
     function MapUpdater(map) {
         this.map = null;
         this.gmarkers = [];
@@ -50,8 +50,8 @@ var MapUpdater = /** @class */ (function () {
         return (degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
     };
     return MapUpdater;
-}());
-var Marker = /** @class */ (function () {
+})();
+var Marker = (function () {
     function Marker(lat, lng, angle, map, icon) {
         this.lat = lat;
         this.lng = lng;
@@ -60,4 +60,4 @@ var Marker = /** @class */ (function () {
         this.icon = icon;
     }
     return Marker;
-}());
+})();
