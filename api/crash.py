@@ -148,7 +148,10 @@ def crash_prob(xx, details, get_var=False):
 def get_html_plot():
     content = request.get_json()
     print(content)
-    routes = content['routes']  # [[1.2, 4.5], [1.2, 4.5], [1.2, 4.5]]
+    x1 = content['x1']
+    x2 = content['x2']
+    y1 = content['y1']
+    y2 = content['y2']
     persona = content['persona']  # { "age": 17, weather: 1 }
     # persona = {
     #     'time': 10,
@@ -157,9 +160,19 @@ def get_html_plot():
     #     'weather': 3,
     #     'sex': 1
     # }
-    result_probs = crash_prob(routes, persona)  # [0.1, 0.5, 0.2]
-    plot_scatterplot_on_map(lat, lng, coors, result_probs)
+    mesh = create_mesh(x1, x2, y1, y2)
+    result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
+    plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, coors, result_probs)
     return
+
+def create_mesh(x1, x2, y1, y2, affinity=100):
+    xx = np.linspace(x1, x2, affinity)
+    yy = np.linspace(y1, y2, affinity)
+    mesh = []
+    for i in xx:
+        for j in yy:
+            mesh.append((i, j))
+    return mesh
 
 def prepare_data_for_plots(coors, p):
     lats, lots = [], []
