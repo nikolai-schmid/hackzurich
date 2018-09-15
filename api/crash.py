@@ -20,6 +20,15 @@ from bokeh.plotting import figure, output_file, gmap, save
 from bokeh.io import output_notebook, show  # output_file
 from bokeh.models import ColumnDataSource, GMapOptions
 
+from pyproj import Proj, transform
+from bokeh.palettes import Spectral11
+from bokeh.colors import RGB
+
+from bokeh.io import output_notebook, show # output_file
+from bokeh.models import ColumnDataSource, GMapOptions, LinearColorMapper
+from bokeh.models import BasicTicker, ColorBar, ColumnDataSource, LinearColorMapper, PrintfTickFormatter
+from bokeh.plotting import gmap, figure
+
 app = Flask(__name__, static_url_path='')
 CORS(app)
 
@@ -173,6 +182,27 @@ def create_html_pot():
     plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, mesh, result_probs)
     return '0'
 
+@app.route('/html_plot2', methods=['POST'])
+def create_html_plot2():
+    content = request.get_json()
+    print(content)
+    x1 = content['x1']
+    x2 = content['x2']
+    y1 = content['y1']
+    y2 = content['y2']
+    persona = content['persona']  # { "age": 17, weather: 1 }
+    # persona = {
+    #     'time': 10,
+    #     'age': 17,
+    #     'vehicle': 3,
+    #     'weather': 3,
+    #     'sex': 1
+    # }
+    mesh = create_mesh(x1, x2, y1, y2)
+    result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
+    plot_scatterplot_on_map2(x1, x2, y1, y2, mesh, result_probs)
+    return '0'
+
 
 def create_mesh(x1, x2, y1, y2, affinity=100):
     xx = np.linspace(x1, x2, affinity)
@@ -231,3 +261,24 @@ def plot_scatterplot_on_map(lat, lng, mesh, result_probs):
 
     output_file("plot.html")
     save(plot)
+
+
+def plot_scatterplot_on_map2(x0, x1, y0, y1, mesh, result_probs):
+    Spectral11_alpha = [RGB(int(c[1:3], 16), int(c[3:5], 16), int(c[5:], 16), a=0.6) for c in Spectral11]
+    map_options = GMapOptions(lat=(x0+x1)/2, lng=(y0+y1)/2, map_type="roadmap", zoom=11)
+
+    fig_p = gmap("AIzaSyC7DtKqWoAtgKFmYtUu-PceyA7bV1Y9NTU", map_options, title="HZ18")
+    p1 = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), y0, x0)
+    p2 = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), y1, x1)
+
+    color_mapper = LinearColorMapper(palette=Spectral11_alpha, low=0, high=max(result_probs))
+    fig_p.image(image=[result_probs.reshape(800, 800)], x=y0, y=x0, dw=p2[0]-p1[0], dh=p2[1]-p1[1], color_mapper=color_mapper)
+
+    color_bar = ColorBar(color_mapper=color_mapper, location=(5, 0))
+
+    fig_p.add_layout(color_bar, 'right')
+
+    fig_p.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
+
+    output_file("plot2.html")
+    save(fig_p)
