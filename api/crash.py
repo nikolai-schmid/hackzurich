@@ -165,6 +165,7 @@ def get_html_plot():
     mesh = create_mesh(x1, x2, y1, y2)
     result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
     plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, mesh, result_probs)
+    return 200
 
 def create_mesh(x1, x2, y1, y2, affinity=100):
     xx = np.linspace(x1, x2, affinity)
