@@ -182,6 +182,10 @@ def create_html_pot():
     plot_scatterplot_on_map((x1+x2)/2, (y1+y2)/2, mesh, result_probs)
     return '0'
 
+@app.route('/html_plot2')
+def get_html_plot2():
+    return send_from_directory('.', 'plot2.html')
+
 @app.route('/html_plot2', methods=['POST'])
 def create_html_plot2():
     content = request.get_json()
@@ -198,7 +202,7 @@ def create_html_plot2():
     #     'weather': 3,
     #     'sex': 1
     # }
-    mesh = create_mesh(x1, x2, y1, y2, affinity=800)
+    mesh = create_mesh(x1, x2, y1, y2, affinity=700)
     result_probs = crash_prob(mesh, persona)  # [0.1, 0.5, 0.2]
     plot_scatterplot_on_map2(x1, x2, y1, y2, mesh, result_probs)
     return '0'
@@ -282,3 +286,4 @@ def plot_scatterplot_on_map2(x0, x1, y0, y1, mesh, result_probs):
 
     output_file("plot2.html")
     save(fig_p)
+
