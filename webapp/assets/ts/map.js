@@ -48,6 +48,7 @@ function mock() {
 
 function updateMarkers(points) {
     var routes = [];
+    var orig_points = points
     for (let point of points) {
         routes.push([point.lat(), point.lng()]);
     }
@@ -65,6 +66,7 @@ function updateMarkers(points) {
     var updateMarkersInterval = null
     var dangers = null
     var flags = []
+    var crash_index = -1
 
     function update() {
         mapUpdater.removeMarker();
@@ -97,7 +99,7 @@ function updateMarkers(points) {
             mapUpdater.alert()
             clearInterval(updateMarkersInterval);
             updateMarkersInterval = setInterval(update, 1000);
-        } else if (markerIndex > crash_index) {
+        } else if (crash_index >=0 && markerIndex > crash_index) {
             clearInterval(updateMarkersInterval);
             updateMarkersInterval = setInterval(update, 300);
         }
@@ -114,8 +116,9 @@ function updateMarkers(points) {
             for (i = 0, j = dangers.length; i < j; i += chunk) {
                 temp = dangers.slice(i, i + chunk);
                 for (k = 0; k < temp.length; k++) {
-                    if (temp[k] > 0.5) {
-                        dangerPoint = points[i + k]
+                    if (temp[k] > 0.9) {
+                        console.log(i+k)
+                        dangerPoint = orig_points[i + k]
                         flags[i + k] = 1
                         mapUpdater.updateMarker(new Marker(dangerPoint.lat(), dangerPoint.lng(), 0, map, "assets/speed.png"), true);
                         break
