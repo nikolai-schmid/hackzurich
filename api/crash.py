@@ -287,8 +287,8 @@ def plot_scatterplot_on_map2(x0, x1, y0, y1, mesh, result_probs):
 
 
 
-@app.route('/direction', methods=['POST'])
-def predict():
+@app.route('/predict_direction', methods=['POST'])
+def predict_direction():
     content = request.get_json()
     print(content)
     pos = np.array(content['position'])  # [2, 3]
