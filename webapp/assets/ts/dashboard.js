@@ -5,8 +5,9 @@ window.onload = () => {
 }
 
 async function generate(data) {
+    console.log("updating");
     jQuery.ajax({
-        url: "http://192.168.43.81:5000/html_plot",
+        url: "http://safetify.scapp.io/html_plot2",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(data),

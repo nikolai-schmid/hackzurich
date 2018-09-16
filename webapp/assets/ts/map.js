@@ -1,11 +1,8 @@
 var map = null;
 var mapUpdater = null;
-var dangerPredictor = new DangerPredictor();
 var directionsService = null;
 var directionsDisplay = null;
-var inDangerCount = 0;
 
-var pointNum = 0;
 var markerIndex = 0;
 
 function initMap() {
@@ -106,7 +103,7 @@ function updateMarkers(points) {
     }
 
     jQuery.ajax({
-        url: "http://192.168.43.81:5000/predict",
+        url: "http://safetify.scapp.io/predict",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify(data),
