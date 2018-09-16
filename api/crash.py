@@ -285,3 +285,32 @@ def plot_scatterplot_on_map2(x0, x1, y0, y1, mesh, result_probs):
     output_file("plot2.html")
     save(fig_p)
 
+
+
+@app.route('/direction', methods=['POST'])
+def predict():
+    content = request.get_json()
+    print(content)
+    pos = np.array(content['position'])  # [2, 3]
+    v = np.array(content['velocity'])  # [1, 2]]
+    persona = content['persona']  # { "age": 17, weather: 1 }
+
+    v = v / np.linalg.norm(v)
+    right_v = np.array([v[1], -v[0]]) + v
+    left_v = np.array([-v[1], v[0]]) + v
+
+    lambds = np.linspace(0.8, 1.8, 10)
+    xx_left = np.array([l * left_v for l in lambds])
+    xx_right = np.array([l * right_v for l in lambds])
+
+    left_mean = computer_crash_prob(xx_left, persona, return_cov=False).mean()
+    right_mean = computer_crash_prob(xx_right, persona, return_cov=False).mean() 
+
+    if left_mean > right_mean + 0.2:
+        return jsonify([1, 0, 0])
+    elif right_mean > left_mean + 0.2:
+        return jsonify([0, 0, 1])
+
+    return jsonify([0, 1, 0])
+
+
